@@ -6,12 +6,25 @@
     1).带头节点
     2).不带头节点
 2.指定节点前插
-3.指定节点后插
+3.指定节 点后插
 */
-/*
-单链表删除：
-1.按序插入(带头节点)
 
+/*
+单链表删除(带头节点)：
+1.按序删除
+2.按节点删除
+*/
+
+/*
+单链表查找(带头节点)：
+1. 按位查找
+2. 按值查找
+*/
+
+/*
+单链表的建立(带头节点): 对应插入的两种方法
+1.尾插法
+2.头插法
 */
 
 //把结构体LNode 声明为LNode和*LinkList这两个名字,后面为指针的名字
@@ -49,7 +62,7 @@ bool InsertNextNode(LNode *p,int e){
 
 //按位删除
 bool ListDelete(LinkList &L, int i, int e){
-     if (i<1)
+    if (i<1)
         return false;
     LNode *p;
     int j=0;
@@ -71,7 +84,7 @@ bool ListDelete(LinkList &L, int i, int e){
     return true;
 }
 
-//删除指定节点
+//按节点删除
 bool DeleteNode(LNode *p){
     if (p== NULL){
         return false;
@@ -84,6 +97,52 @@ bool DeleteNode(LNode *p){
     p->next=p->next->next;
     free(p->next);
     return true;
+}
+//按位查找，带头节点
+LNode * GetElem(LinkList L, int i){
+    //i==0 为头节点
+    if (i<0)
+        return false;
+    LNode *p;
+    int j=0;
+    p=L;
+    while(p!=NULL && j<i-1){
+        //->左边为指针 功能与. 相同
+        p=p->next;
+        j++;
+    }
+    return p;
+}
+//按值查找 返回节点
+LNode * GetValue(LinkList L, int e){
+    LNode *p=L->next;
+    while(p->data != e && p != NULL){
+        p=p->next;
+    }
+    return p;
+}
+// 求链表的长度 不算头节点
+int length(LinkList L){
+    int len=0;
+    LNode *p=L->next;
+    while(p != NULL){
+        len++;
+        p = p->next;
+    }
+    return len;
+}
+//建立链表，尾插法
+LinkList List_TailInit(LinkList &L){
+    int x=0;
+    L=(LinkList)malloc(sizeof(LNode));
+    LNode *s,*r=L;
+    while (x!=1000){
+        InsertNextNode(r,x);
+        s=r->next;
+        r=s;
+        x++;
+    }
+
 }
 //带头节点的初始化
 /*****&表示不是复制 就是位于内存中的该份数据,是引用******/
