@@ -101,8 +101,8 @@ bool DeleteNode(LNode *p){
 //按位查找，带头节点
 LNode * GetElem(LinkList L, int i){
     //i==0 为头节点
-    if (i<0)
-        return false;
+    if (i<0){
+        return NULL;}
     LNode *p;
     int j=0;
     p=L;
@@ -132,17 +132,21 @@ int length(LinkList L){
     return len;
 }
 //建立链表，尾插法
+//加入一千个节点
 LinkList List_TailInit(LinkList &L){
     int x=0;
-    L=(LinkList)malloc(sizeof(LNode));
-    LNode *s,*r=L;
+    LNode *s=(LinkList)malloc(sizeof(LNode));
+    LNode *r = L;
     while (x!=1000){
-        InsertNextNode(r,x);
-        s=r->next;
+        s->data=x;
+        s->next=r->next;
+        r->next=s;
         r=s;
+        //InsertNextNode(r,x);
+        //r=r->next;
         x++;
     }
-
+    return L;
 }
 //带头节点的初始化
 /*****&表示不是复制 就是位于内存中的该份数据,是引用******/
@@ -203,9 +207,15 @@ bool ListInsertwithoutHN(LinkList &L, int i, int e){
     return InsertNextNode(p, e);
 }
 
-void test(){
+int main(){
     LinkList L;
     //L为头指针
     InitListwithHN(L);
+    List_TailInit(L);
+//    for (int i=0; i<length(L);i++){
+  //      //printf("%d\n",i);
+   //     printf("value is %d\n",GetElem(L,i)->data);
+   // }
+    printf("value is %d\n",GetElem(L,2)->data);
     
 }

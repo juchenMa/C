@@ -4,11 +4,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build LinkList",
+            "label": "build DLinkList",
             "type": "shell",
             "command": "g++",
             "args": [
-                "-g","LinkList.cpp",
+                "-g","DLinkList.cpp",
             ],
             "group": {
                 "kind": "build",
