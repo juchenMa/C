@@ -1,39 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 /*
-单链表的插入：
-1.按序插入：
-    1).带头节点
-    2).不带头节点
-2.指定节点前插
-3.指定节 点后插
+单链表的建立(带头节点): 
+1.头插法
+2.尾插法
+3，按序插入
+4.按位删除
+5.按节点删除
+6.按位查找
+7.按值查找
 */
-
-/*
-单链表删除(带头节点)：
-1.按序删除
-2.按节点删除
-*/
-
-/*
-单链表查找(带头节点)：
-1. 按位查找
-2. 按值查找
-*/
-
-/*
-单链表的建立(带头节点): 对应插入的两种方法
-1.尾插法
-2.头插法
-*/
-
 //把结构体LNode 声明为LNode和*LinkList这两个名字,后面为指针的名字
 typedef struct LNode{
     int data;
     struct LNode *next;
 }LNode,*LinkList;//*为指向struct LNode类型的指针 称为LinkList
 
-//前插操作
+//带头节点的初始化
+/*****&表示不是复制 就是位于内存中的该份数据,是引用******/
+bool InitListwithHN(LinkList &L){
+    //头节点不储存数据
+    L=(LNode *)malloc(sizeof(LNode));
+    if(L==NULL)
+        return false;
+    L->next = NULL;
+    return true;
+}
+//带头节点头插操作
 /*不给出头节点，无法得到之前节点的信息，采用交换数据的方法来实现*/
 bool InsertPriorNode(LNode *p,int e){
     if (p==NULL)
@@ -48,8 +41,7 @@ bool InsertPriorNode(LNode *p,int e){
     p->data=e;
     return true;
 }
-
-//后插操作
+//带头节点尾插操作
 bool InsertNextNode(LNode *p,int e){
     if (p==NULL)
         return false;
@@ -59,8 +51,21 @@ bool InsertNextNode(LNode *p,int e){
     p->next=s;
     return true; 
 }
-
-//按位删除
+//带头节点的按序插入
+bool ListInsertwithHN(LinkList &L, int i, int e){
+    if (i<1)
+        return false;
+    LNode *p;
+    int j=0; 
+    p=L;
+    while(p!=NULL && j<i-1){
+        //->左边为指针 功能与. 相同
+        p=p->next;
+        j++;
+    }
+    return InsertNextNode(p, e);
+}
+//带头节点按位删除
 bool ListDelete(LinkList &L, int i, int e){
     if (i<1)
         return false;
@@ -83,8 +88,7 @@ bool ListDelete(LinkList &L, int i, int e){
     free(q);
     return true;
 }
-
-//按节点删除
+//带头节点按节点删除
 bool DeleteNode(LNode *p){
     if (p== NULL){
         return false;
@@ -98,7 +102,7 @@ bool DeleteNode(LNode *p){
     free(p->next);
     return true;
 }
-//按位查找，带头节点
+//带头节点按位查找
 LNode * GetElem(LinkList L, int i){
     //i==0 为头节点
     if (i<0){
@@ -113,7 +117,7 @@ LNode * GetElem(LinkList L, int i){
     }
     return p;
 }
-//按值查找 返回节点
+//带头节点按值查找 返回节点
 LNode * GetValue(LinkList L, int e){
     LNode *p=L->next;
     while(p->data != e && p != NULL){
@@ -121,64 +125,16 @@ LNode * GetValue(LinkList L, int e){
     }
     return p;
 }
-// 求链表的长度 不算头节点
-int length(LinkList L){
-    int len=0;
-    LNode *p=L->next;
-    while(p != NULL){
-        len++;
-        p = p->next;
-    }
-    return len;
-}
-//建立链表，尾插法
-//加入一千个节点
-LinkList List_TailInit(LinkList &L){
-    int x=0;
-    LNode *s=(LinkList)malloc(sizeof(LNode));
-    LNode *r = L;
-    while (x!=1000){
-        s->data=x;
-        s->next=r->next;
-        r->next=s;
-        r=s;
-        //InsertNextNode(r,x);
-        //r=r->next;
-        x++;
-    }
-    return L;
-}
-//带头节点的初始化
-/*****&表示不是复制 就是位于内存中的该份数据,是引用******/
-bool InitListwithHN(LinkList &L){
-    //为头节点分配空间
-    //头节点不储存数据
-    L=(LNode *)malloc(sizeof(LNode));
-    if(L==NULL)
-        return false;
-    L->next = NULL;
-    return true;
-}
-bool Empty(LinkList L){
-    return (L==NULL);
-}
-//带头节点的按序插入
-bool ListInsertwithHN(LinkList &L, int i, int e){
-    if (i<1)
-        return false;
-    LNode *p;
-    int j=0; 
-    p=L;
-    while(p!=NULL && j<i-1){
-        //->左边为指针 功能与. 相同
-        p=p->next;
-        j++;
-    }
-    return InsertNextNode(p, e);
-}
 
 
-//不带头节点的初始化
+
+
+
+
+/*
+1.不带头节点的初始化
+2.不带头节点的按序插入     
+*/
 bool InitListwithoutHN(LinkList &L){
     L = NULL;           
     return true;
@@ -205,6 +161,31 @@ bool ListInsertwithoutHN(LinkList &L, int i, int e){
         j++;
     }
     return InsertNextNode(p, e);
+}
+
+
+
+
+
+
+
+
+//建立链表，尾插法
+//加入一千个节点
+LinkList List_TailInit(LinkList &L){
+    int x=0;
+    LNode *s=(LinkList)malloc(sizeof(LNode));
+    LNode *r = L;
+    while (x!=1000){
+        s->data=x;
+        s->next=r->next;
+        r->next=s;
+        r=s;
+        //InsertNextNode(r,x);
+        //r=r->next;
+        x++;
+    }
+    return L;
 }
 
 int main(){

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+//双链表
 //前插，后插，按位序插
 //前插和按位序插都可以通过后插操作来实现！！
 typedef struct DNode
